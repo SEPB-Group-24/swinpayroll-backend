@@ -34,7 +34,7 @@ class AuthManager {
     this.configurePassport();
   }
 
-  assertRoles(roles: Role[]): Handler {
+  assertRoles(...roles: Role[]): Handler {
     return (req, res, next) => {
       (req as ModifiedRequest).roles = roles;
 
@@ -46,7 +46,7 @@ class AuthManager {
 
   assertUser() {
     // assert any role
-    return this.assertRoles(Object.values(Role));
+    return this.assertRoles(...Object.values(Role));
   }
 
   authenticate() {
