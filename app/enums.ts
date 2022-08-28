@@ -5,10 +5,25 @@ export enum LogLevel {
   ERROR = 'error'
 }
 
+export enum MaritalStatus {
+  SINGLE = 'single',
+  DE_FACTO = 'de_facto',
+  MARRIED = 'married',
+  DIVORCED = 'divorced',
+  WIDOWED = 'widowed',
+  OTHER = 'other'
+}
+
 export enum Role {
   LEVEL_1 = 'level1',
   LEVEL_2 = 'level2',
   LEVEL_3 = 'level3'
+}
+
+export enum Sex {
+  M = 'm',
+  F = 'f',
+  O = 'o'
 }
 
 export enum TableName {
@@ -19,7 +34,7 @@ export enum TableName {
   INSURANCE_POLICIES = 'insurance_policies',
   POSITIONS = 'positions',
   PROJECTS = 'projects',
-  SUB_CONTRACTORS = 'sub_contractors',
+  SUBCONTRACTS = 'subcontracts',
   USERS = 'users',
   WEEKLY_PAYROLL_HISTORIES = 'weekly_payroll_histories'
 }

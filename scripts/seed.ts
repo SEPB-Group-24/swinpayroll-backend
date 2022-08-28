@@ -31,13 +31,13 @@ const logger = new Logger('seed-script');
 
   try {
     await database.knex<User>(TableName.USERS)
-    .insert({
-      id: v4(),
-      name: 'Default User',
-      email: DEFAULT_EMAIL,
-      password_hash: await crypto.hashPassword(DEFAULT_PASSWORD),
-      role: Role.LEVEL_1
-    });
+      .insert({
+        id: v4(),
+        name: 'Default User',
+        email: DEFAULT_EMAIL,
+        password_hash: await crypto.hashPassword(DEFAULT_PASSWORD),
+        role: Role.LEVEL_1
+      });
     logger.info('seeded default user', {
       email: DEFAULT_EMAIL,
       password: DEFAULT_PASSWORD

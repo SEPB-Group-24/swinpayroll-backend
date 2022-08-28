@@ -26,7 +26,7 @@ CREATE TABLE `comments` (
   `id` varchar(36) NOT NULL,
   `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `employee_id` varchar(36) NOT NULL,
+  `employee_id` varchar(255) NOT NULL,
   `comment` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `employee_id` (`employee_id`),
@@ -45,31 +45,31 @@ CREATE TABLE `employees` (
   `id` varchar(36) NOT NULL,
   `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `code` varchar(30) NOT NULL,
-  `name` varchar(30) NOT NULL,
-  `address` varchar(30) NOT NULL,
-  `phone` varchar(30) NOT NULL,
+  `code` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `phone` varchar(255) NOT NULL,
   `date_of_birth` date NOT NULL,
-  `referee` varchar(30) DEFAULT NULL,
-  `emergency_name` varchar(20) NOT NULL,
-  `emergency_address` varchar(35) NOT NULL,
-  `emergency_phone` varchar(30) NOT NULL,
+  `sex` enum('m','f','o') NOT NULL,
+  `marital_status` enum('single', 'de_facto', 'married', 'divorced', 'widowed', 'other') NOT NULL,
+  `referee` varchar(255) DEFAULT NULL,
+  `emergency_name` varchar(255) NOT NULL,
+  `emergency_address` varchar(255) NOT NULL,
+  `emergency_phone` varchar(255) NOT NULL,
   `hired_date` date NOT NULL,
-  `skill` varchar(30) NOT NULL,
+  `skill` varchar(255) NOT NULL,
   `hourly_rate` float NOT NULL,
   `overtime_rate` float NOT NULL,
-  `cv_path` varchar(100) DEFAULT NULL,
-  `photo_path` varchar(100) DEFAULT NULL,
-  `project_id` varchar(36) NOT NULL,
-  `position_id` varchar(36) NOT NULL,
-  `subcontractor_id` varchar(36) DEFAULT NULL,
+  `project_id` varchar(255) NOT NULL,
+  `position_id` varchar(255) NOT NULL,
+  `subcontract_id` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `project_id` (`project_id`),
   KEY `position_id` (`position_id`),
-  KEY `subcontractor_id` (`subcontractor_id`),
+  KEY `subcontract_id` (`subcontract_id`),
   CONSTRAINT `employees_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`),
   CONSTRAINT `employees_ibfk_2` FOREIGN KEY (`position_id`) REFERENCES `positions` (`id`),
-  CONSTRAINT `employees_ibfk_3` FOREIGN KEY (`subcontractor_id`) REFERENCES `sub_contractors` (`id`)
+  CONSTRAINT `employees_ibfk_3` FOREIGN KEY (`subcontract_id`) REFERENCES `subcontracts` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -84,7 +84,7 @@ CREATE TABLE `hourly_rate_histories` (
   `id` varchar(36) NOT NULL,
   `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `employee_id` varchar(36) NOT NULL,
+  `employee_id` varchar(255) NOT NULL,
   `rate_changed_Date` date NOT NULL,
   `hourly_rate` float NOT NULL,
   PRIMARY KEY (`id`),
@@ -104,8 +104,8 @@ CREATE TABLE `insurance_companies` (
   `id` varchar(36) NOT NULL,
   `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `code` varchar(10) NOT NULL,
-  `name` varchar(30) NOT NULL,
+  `code` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -121,12 +121,12 @@ CREATE TABLE `insurance_policies` (
   `id` varchar(36) NOT NULL,
   `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `code` varchar(10) NOT NULL,
-  `project_id` varchar(36) NOT NULL,
-  `insurance_company_id` varchar(36) NOT NULL,
+  `code` varchar(255) NOT NULL,
+  `project_id` varchar(255) NOT NULL,
+  `insurance_company_id` varchar(255) NOT NULL,
   `insurance_start_date` date NOT NULL,
   `insurance_end_date` date DEFAULT NULL,
-  `details` varchar(35) DEFAULT NULL,
+  `details` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `project_id` (`project_id`),
   KEY `insurance_company_id` (`insurance_company_id`),
@@ -146,8 +146,8 @@ CREATE TABLE `positions` (
   `id` varchar(36) NOT NULL,
   `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `code` varchar(10) NOT NULL,
-  `name` varchar(30) NOT NULL,
+  `code` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
   `minimum_pay` float NOT NULL,
   `maximum_pay` float NOT NULL,
   PRIMARY KEY (`id`)
@@ -165,32 +165,32 @@ CREATE TABLE `projects` (
   `id` varchar(36) NOT NULL,
   `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `code` varchar(10) NOT NULL,
-  `name` varchar(30) NOT NULL,
-  `acronym` varchar(2) NOT NULL,
+  `code` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `acronym` varchar(255) NOT NULL,
   `accumulation_amount` float NOT NULL,
-  `project_group` varchar(3) NOT NULL,
+  `project_group` varchar(255) NOT NULL,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
-  `address` varchar(30) NOT NULL,
+  `address` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `sub_contractors`
+-- Table structure for table `subcontracts`
 --
 
-DROP TABLE IF EXISTS `sub_contractors`;
+DROP TABLE IF EXISTS `subcontracts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `sub_contractors` (
+CREATE TABLE `subcontracts` (
   `id` varchar(36) NOT NULL,
   `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `code` varchar(10) NOT NULL,
-  `name` varchar(30) NOT NULL,
-  `project_id` varchar(36) NOT NULL,
+  `code` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `project_id` varchar(255) NOT NULL,
   `hired_date` date NOT NULL,
   `hourly_rate` float NOT NULL,
   `down_payment1` float DEFAULT NULL,
@@ -198,7 +198,7 @@ CREATE TABLE `sub_contractors` (
   `down_payment3` float DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `project_id` (`project_id`),
-  CONSTRAINT `sub_contractors_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`)
+  CONSTRAINT `subcontracts_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -213,9 +213,9 @@ CREATE TABLE `users` (
   `id` varchar(36) NOT NULL,
   `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `name` varchar(30) NOT NULL,
-  `email` varchar(50) NOT NULL,
-  `password_hash` varchar(500) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password_hash` varchar(255) NOT NULL,
   `role` enum('level1','level2','level3') NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -233,9 +233,9 @@ CREATE TABLE `weekly_payroll_histories` (
   `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `week_start_date` date NOT NULL,
-  `project_id` varchar(36) NOT NULL,
-  `employee_id` varchar(36) NOT NULL,
-  `employee_position` varchar(4) DEFAULT NULL,
+  `project_id` varchar(255) NOT NULL,
+  `employee_id` varchar(255) NOT NULL,
+  `employee_position` varchar(255) DEFAULT NULL,
   `employee_hourly_rate` float NOT NULL,
   `employee_overtime_rate` float NOT NULL,
   `hours_day_1` int DEFAULT NULL,
