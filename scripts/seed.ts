@@ -6,7 +6,7 @@ import { Role, TableName } from '../app/enums';
 import Logger from '../app/logger';
 import { User } from '../app/models';
 
-const DEFAULT_EMAIL = 'staff@swinpayroll.app';
+const DEFAULT_EMAIL = 'staff@swinpayroll.xyz';
 const DEFAULT_PASSWORD = 'password';
 
 const logger = new Logger('seed-script');
