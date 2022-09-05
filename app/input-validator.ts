@@ -5,12 +5,14 @@ import database from './database';
 import { TableName } from './enums';
 import {
   Employee,
+  InsuranceCompany,
   Project
 } from './models';
 import { singularise } from './util';
 import {
   BaseValidator,
   employeeValidator,
+  insuranceCompanyValidator,
   projectValidator
 } from './validators';
 
@@ -131,6 +133,8 @@ class InputValidator {
     switch (tableName) {
       case TableName.EMPLOYEES:
         return this.__validateModel<Employee>(employeeValidator, tableName, data as Employee, req);
+      case TableName.INSURANCE_COMPANIES:
+        return this.__validateModel<InsuranceCompany>(insuranceCompanyValidator, tableName, data as InsuranceCompany, req);
       case TableName.PROJECTS:
         return this.__validateModel<Project>(projectValidator, tableName, data as Project, req);
       default:

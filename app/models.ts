@@ -24,6 +24,12 @@ export interface Employee {
   subcontract_id: string;
 }
 
+export interface InsuranceCompany {
+  id: string;
+  code: string;
+  name: string;
+}
+
 export interface Project {
   id: string;
   create_date: string;
