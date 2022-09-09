@@ -65,7 +65,6 @@ class ProjectValidator extends Validator<Project> {
       required: true,
       type: Type.STRING
     });
-
   }
 }
 
