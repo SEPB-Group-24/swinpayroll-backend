@@ -31,7 +31,7 @@ export interface Project {
   code: string;
   name: string;
   acronym: string;
-  accumulation_amount: string;
+  accumulation_amount: number;
   address: string;
   end_date: string;
   project_group: string;

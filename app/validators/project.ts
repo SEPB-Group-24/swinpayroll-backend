@@ -5,7 +5,6 @@ class ProjectValidator extends Validator<Project> {
   constructor() {
     super();
 
-
     this.addValidation('code', {
       maxLength: Validator.MAX_STRING_LENGTH,
       required: true,
@@ -25,9 +24,8 @@ class ProjectValidator extends Validator<Project> {
     });
 
     this.addValidation('accumulation_amount', {
-      maxLength: Validator.MAX_STRING_LENGTH,
       required: true,
-      type: Type.STRING
+      type: Type.NUMBER
     });
 
     this.addValidation('address', {
