@@ -5,7 +5,6 @@ class InsuranceCompanyValidator extends Validator<InsuranceCompany> {
   constructor() {
     super();
 
-    
     this.addValidation('code', {
       maxLength: Validator.MAX_STRING_LENGTH,
       required: true,
@@ -17,7 +16,6 @@ class InsuranceCompanyValidator extends Validator<InsuranceCompany> {
       required: true,
       type: Type.STRING
     });
-
   }
 }
 
