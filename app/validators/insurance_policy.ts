@@ -1,13 +1,9 @@
-import database from "app/database";
 import { TableName } from "app/enums";
-import { add } from "lodash";
-import { InsurancePolicy } from "../models";
+import { insurance_policy } from "../models";
 import Validator, { Type } from "./validator";
-
-class InsurancePolicyValidator extends Validator<InsurancePolicy> {
+class InsurancePolicyValidator extends Validator<insurance_policy> {
     constructor() {
         super();
-
         this.addValidation('policy_code', {
             maxLength: Validator.MAX_STRING_LENGTH,
             required: true,
@@ -21,15 +17,23 @@ class InsurancePolicyValidator extends Validator<InsurancePolicy> {
                     .first();
 
                 if (!record) {
-                    addError('Invalid ID');
+                    addError('is invalid');
                 }
             },
             required: true,
             type: Type.STRING
         });
 
-        this.addValidation('company', {
-            maxLength: Validator.MAX_STRING_LENGTH,
+        this.addValidation('insurance_company_id', {
+            custom: async ({ addError, value}, database) => {
+                const record = await database.knex(TableName.INSURANCE_COMPANIES)
+                .where('id', value)
+                .first();
+
+                if (!record) {
+                    addError('is invalid');
+                }
+            },
             required: true,
             type: Type.STRING
         });
@@ -57,12 +61,12 @@ class InsurancePolicyValidator extends Validator<InsurancePolicy> {
                 const date = new Date(value);
 
                 if(isNaN(date.getTime())) {
-                    addError('Invalid date');
+                    addError('invalid');
                     return;
                 }
                 
                 if (date < new Date(data.start_date)) {
-                    addError('date cannot be before the start of the contract');
+                    addError('cannot be before the start of the contract');
                 }
             },
             required: true,

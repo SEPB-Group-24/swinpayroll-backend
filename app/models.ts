@@ -34,11 +34,11 @@ export interface User {
   role: Role;
 }
 
-export interface InsurancePolicy {
+export interface insurance_policy {
   id: string; 
   policy_code: string;
   project_id: string;
-  company: string;
+  insurance_company_id: string;
   policy_details: string;
   comment: string;
   start_date: string;

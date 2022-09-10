@@ -14,7 +14,6 @@ import inputValidator from './input-validator';
 import Logger from './logger';
 import { User } from './models';
 import { createRecord, deleteRecord, getAllRecords, getOneRecord, updateRecord } from './resources';
-import { create } from 'lodash';
 
 const upload = multer();
 
@@ -167,12 +166,12 @@ class HttpServer {
     // TODO POST and PUT
     this.apiV1Router.delete('/projects/:id', authManager.assertRoles(Role.LEVEL_1), deleteRecord(TableName.PROJECTS));
 
-    //Insurance Policies
-    this.apiV1Router.get('/insurancePolicy', authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), getAllRecords(TableName.INSURANCE_POLICIES));
-    this.apiV1Router.get('/insurancePolicy/:id', authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), getOneRecord(TableName.INSURANCE_POLICIES));
-    this.apiV1Router.post('/insurancePolicy', authManager.assertRoles(Role.LEVEL_1), inputValidator.validateModel(TableName.INSURANCE_POLICIES), createRecord(TableName.INSURANCE_POLICIES));
-    this.apiV1Router.put('/insurancePolicy/:id', authManager.assertRoles(Role.LEVEL_1), inputValidator.validateModel(TableName.INSURANCE_POLICIES), updateRecord(TableName.INSURANCE_POLICIES));
-    this.apiV1Router.delete('/insurancePolicy/:id', authManager.assertRoles(Role.LEVEL_1), deleteRecord(TableName.INSURANCE_POLICIES));
+    // insurance_policies
+    this.apiV1Router.get('/insurance_policy', authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), getAllRecords(TableName.INSURANCE_POLICIES));
+    this.apiV1Router.get('/insurance_policy/:id', authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), getOneRecord(TableName.INSURANCE_POLICIES));
+    this.apiV1Router.post('/insurance_policy', authManager.assertRoles(Role.LEVEL_1), inputValidator.validateModel(TableName.INSURANCE_POLICIES), createRecord(TableName.INSURANCE_POLICIES));
+    this.apiV1Router.put('/insurance_policy/:id', authManager.assertRoles(Role.LEVEL_1), inputValidator.validateModel(TableName.INSURANCE_POLICIES), updateRecord(TableName.INSURANCE_POLICIES));
+    this.apiV1Router.delete('/insurance_policy/:id', authManager.assertRoles(Role.LEVEL_1), deleteRecord(TableName.INSURANCE_POLICIES));
   }
 }
 
