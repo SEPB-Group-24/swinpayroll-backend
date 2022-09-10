@@ -33,3 +33,14 @@ export interface User {
   password_hash: string;
   role: Role;
 }
+
+export interface InsurancePolicy {
+  id: string; 
+  policy_code: string;
+  project_id: string;
+  company: string;
+  policy_details: string;
+  comment: string;
+  start_date: string;
+  end_date: string;
+}
