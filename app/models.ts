@@ -65,12 +65,20 @@ export interface Subcontract {
   down_payment3: number;
 }
 
-export interface User {
+interface BaseUser {
   id: string;
   create_date: string;
   update_date: string;
   name: string;
   email: string;
-  password_hash: string;
   role: Role;
+}
+
+export interface UserCreate extends BaseUser {
+  password: string;
+  password_confirmation: string;
+}
+
+export interface UserStore extends BaseUser {
+  password_hash: string;
 }

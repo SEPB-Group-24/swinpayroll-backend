@@ -12,7 +12,7 @@ import crypto from './crypto';
 import database from './database';
 import { Role, TableName }  from './enums';
 import Logger from './logger';
-import { User } from './models';
+import { UserStore } from './models';
 
 // constants
 const TOKEN_EXPIRY_PERIOD = 1000 * 60 * 60 * 24 * 30; // 30 days
@@ -61,7 +61,7 @@ class AuthManager {
       session: false
     }, async (email, password, done) => {
       try {
-        const user = await database.knex<User>(TableName.USERS)
+        const user = await database.knex<UserStore>(TableName.USERS)
           .where('email', email.toLowerCase())
           .first();
         if (user) {
@@ -86,7 +86,7 @@ class AuthManager {
       const { logger, roles } = (req as ModifiedRequest);
 
       try {
-        const user = await database.knex<User>(TableName.USERS)
+        const user = await database.knex<UserStore>(TableName.USERS)
           .where('id', payload.id)
           .first();
         const tokenValid = this.tokenIsValid(payload);
@@ -123,7 +123,7 @@ class AuthManager {
         return null;
       }
 
-      const user = await database.knex<User>(TableName.USERS)
+      const user = await database.knex<UserStore>(TableName.USERS)
         .where('id', decoded.id)
         .first();
       if (user) {
@@ -144,7 +144,7 @@ class AuthManager {
     return omit(user, ['password_hash']);
   }
 
-  signUserObject(user: Partial<Payload> & Partial<User>) {
+  signUserObject(user: Partial<Payload> & Partial<UserStore>) {
     const payload = this.sanitiseUser(user);
     return {
       ...payload,

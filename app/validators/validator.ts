@@ -60,7 +60,7 @@ interface ValidationWithoutRegex {
 
 interface ValidationWithRegex {
   regex: RegExp;
-  regexMessage: string;
+  regexMessage?: string;
 }
 
 interface ValidationWithRequiredIf<TModel> {
