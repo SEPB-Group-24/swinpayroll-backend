@@ -1,8 +1,8 @@
-import database from "app/database";
-import { TableName } from "app/enums";
-import { add } from "lodash";
-import { Subcontractor } from "../models";
-import Validator, { Type } from "./validator";
+import database from 'app/database';
+import { TableName } from 'app/enums';
+import { add } from 'lodash';
+import { Subcontractor } from '../models';
+import Validator, { Type } from './validator';
 
 class SubcontractorValidator extends Validator<Subcontractor> {
     constructor() {
