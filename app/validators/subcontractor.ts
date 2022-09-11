@@ -8,7 +8,7 @@ class SubcontractorValidator extends Validator<Subcontractor> {
     constructor() {
         super();
 
-        this.addValidation('subcontractor_code', {
+        this.addValidation('code', {
             maxLength: Validator.MAX_STRING_LENGTH,
             required: true,
             type: Type.STRING
