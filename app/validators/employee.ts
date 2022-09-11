@@ -1,7 +1,7 @@
 import { phone } from 'phone';
 
 import { MaritalStatus, Sex, TableName } from '../enums';
-import { Employee } from '../models';
+import { Employee, Position } from '../models';
 import Validator, { Type } from './validator';
 
 class EmployeeValidator extends Validator<Employee> {
@@ -119,11 +119,25 @@ class EmployeeValidator extends Validator<Employee> {
     });
 
     this.addValidation('hourly_rate', {
+      custom: ({ addError, data, value }) => {
+        if (value < 0) {
+          addError('must be higher than 0');
+        } else if (value > data.overtime_rate) {
+          addError('must be lower than overtime rate');
+        }
+      },
       required: true,
       type: Type.NUMBER
     });
 
     this.addValidation('overtime_rate', {
+      custom: ({ addError, data, value }) => {
+        if (value < 0) {
+          addError('must be higher than 0');
+        } else if (value < data.hourly_rate) {
+          addError('must be higher than hourly rate');
+        }
+      },
       required: true,
       type: Type.NUMBER
     });
@@ -143,13 +157,33 @@ class EmployeeValidator extends Validator<Employee> {
     });
 
     this.addValidation('position_id', {
-      custom: async ({ addError, value }, database) => {
-        const record = await database.knex(TableName.POSITIONS)
+      custom: async ({ addError, data, value }, database) => {
+        const record = await database.knex<Position>(TableName.POSITIONS)
           .where('id', value)
           .first();
 
         if (!record) {
           addError('is invalid');
+          return;
+        }
+
+        const { hourly_rate, overtime_rate } = data;
+        if (!(typeof (hourly_rate && overtime_rate) === 'number')) {
+          return;
+        }
+
+        const { maximum_pay, minimum_pay } = record;
+        if (maximum_pay < hourly_rate) {
+          addError('has a lower maximum pay than the specified hourly rate');
+        }
+        if (minimum_pay > hourly_rate) {
+          addError('has a higher minimum pay than the specified hourly rate');
+        }
+        if (maximum_pay < overtime_rate) {
+          addError('has a lower maximum pay than the specified overtime rate');
+        }
+        if (minimum_pay > overtime_rate) {
+          addError('has a higher minimum pay than the specified overtime rate');
         }
       },
       required: true,

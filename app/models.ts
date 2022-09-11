@@ -40,6 +40,16 @@ export interface InsurancePolicy {
   details: string;
 }
 
+export interface Position {
+  id: string;
+  create_date: string;
+  update_date: string;
+  code: string;
+  name: string;
+  minimum_pay: number;
+  maximum_pay: number;
+}
+
 export interface Project {
   id: string;
   create_date: string;

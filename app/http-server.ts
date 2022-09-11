@@ -172,7 +172,8 @@ class HttpServer {
     // Positions
     this.apiV1Router.get('/positions', authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), getAllRecords(TableName.POSITIONS));
     this.apiV1Router.get('/positions/:id', authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), getOneRecord(TableName.POSITIONS));
-    // TODO POST and PUT
+    this.apiV1Router.post('/positions', authManager.assertRoles(Role.LEVEL_1), inputValidator.validateModel(TableName.POSITIONS), createRecord(TableName.POSITIONS));
+    this.apiV1Router.put('/positions/:id', authManager.assertRoles(Role.LEVEL_1), inputValidator.validateModel(TableName.POSITIONS), updateRecord(TableName.POSITIONS));
     this.apiV1Router.delete('/positions/:id', authManager.assertRoles(Role.LEVEL_1), deleteRecord(TableName.POSITIONS));
 
     // Projects
