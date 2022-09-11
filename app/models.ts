@@ -44,6 +44,17 @@ export interface Project {
   start_date: string;
 }
 
+export interface Subcontract {
+  id: string;
+  create_date: string;
+  update_date: string;
+  code: string;
+  name: string;
+  down_payment1: number;
+  down_payment2: number;
+  down_payment3: number;
+}
+
 export interface User {
   id: string;
   create_date: string;
