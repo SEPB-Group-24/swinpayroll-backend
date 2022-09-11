@@ -1,7 +1,7 @@
-import { TableName } from "app/enums";
-import { insurance_policy } from "../models";
-import Validator, { Type } from "./validator";
-class InsurancePolicyValidator extends Validator<insurance_policy> {
+import { TableName } from 'app/enums';
+import { InsurancePolicy } from '../models';
+import Validator, { Type } from './validator';
+class InsurancePolicyValidator extends Validator<InsurancePolicy> {
     constructor() {
         super();
         this.addValidation('policy_code', {

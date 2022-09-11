@@ -34,7 +34,7 @@ export interface User {
   role: Role;
 }
 
-export interface insurance_policy {
+export interface InsurancePolicy {
   id: string; 
   policy_code: string;
   project_id: string;
