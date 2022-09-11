@@ -154,6 +154,20 @@ class HttpServer {
     }, updateRecord(TableName.EMPLOYEES, false), handleEmployeeUploads);
     this.apiV1Router.delete('/employees/:id', authManager.assertRoles(Role.LEVEL_1), deleteRecord(TableName.EMPLOYEES));
 
+    // Insurance Companies
+    this.apiV1Router.get('/insurance_companies', authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), getAllRecords(TableName.INSURANCE_COMPANIES));
+    this.apiV1Router.get('/insurance_companies/:id', authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), getOneRecord(TableName.INSURANCE_COMPANIES));
+    this.apiV1Router.post('/insurance_companies', authManager.assertRoles(Role.LEVEL_1), inputValidator.validateModel(TableName.INSURANCE_COMPANIES), createRecord(TableName.INSURANCE_COMPANIES));
+    this.apiV1Router.put('/insurance_companies/:id', authManager.assertRoles(Role.LEVEL_1), inputValidator.validateModel(TableName.INSURANCE_COMPANIES), updateRecord(TableName.INSURANCE_COMPANIES));
+    this.apiV1Router.delete('/insurance_companies/:id', authManager.assertRoles(Role.LEVEL_1), deleteRecord(TableName.INSURANCE_COMPANIES));
+
+    // Insurance Policies
+    this.apiV1Router.get('/insurance_policies', authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), getAllRecords(TableName.INSURANCE_POLICIES));
+    this.apiV1Router.get('/insurance_policies/:id', authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), getOneRecord(TableName.INSURANCE_POLICIES));
+    this.apiV1Router.post('/insurance_policies', authManager.assertRoles(Role.LEVEL_1), inputValidator.validateModel(TableName.INSURANCE_POLICIES), createRecord(TableName.INSURANCE_POLICIES));
+    this.apiV1Router.put('/insurance_policies/:id', authManager.assertRoles(Role.LEVEL_1), inputValidator.validateModel(TableName.INSURANCE_POLICIES), updateRecord(TableName.INSURANCE_POLICIES));
+    this.apiV1Router.delete('/insurance_policies/:id', authManager.assertRoles(Role.LEVEL_1), deleteRecord(TableName.INSURANCE_POLICIES));
+
     // Positions
     this.apiV1Router.get('/positions', authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), getAllRecords(TableName.POSITIONS));
     this.apiV1Router.get('/positions/:id', authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), getOneRecord(TableName.POSITIONS));
@@ -163,15 +177,16 @@ class HttpServer {
     // Projects
     this.apiV1Router.get('/projects', authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), getAllRecords(TableName.PROJECTS));
     this.apiV1Router.get('/projects/:id', authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), getOneRecord(TableName.PROJECTS));
-    // TODO POST and PUT
+    this.apiV1Router.post('/projects', authManager.assertRoles(Role.LEVEL_1), inputValidator.validateModel(TableName.PROJECTS), createRecord(TableName.PROJECTS));
+    this.apiV1Router.put('/projects/:id', authManager.assertRoles(Role.LEVEL_1), inputValidator.validateModel(TableName.PROJECTS), updateRecord(TableName.PROJECTS));
     this.apiV1Router.delete('/projects/:id', authManager.assertRoles(Role.LEVEL_1), deleteRecord(TableName.PROJECTS));
 
-    // insurance_policies
-    this.apiV1Router.get('/insurance_policy', authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), getAllRecords(TableName.INSURANCE_POLICIES));
-    this.apiV1Router.get('/insurance_policy/:id', authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), getOneRecord(TableName.INSURANCE_POLICIES));
-    this.apiV1Router.post('/insurance_policy', authManager.assertRoles(Role.LEVEL_1), inputValidator.validateModel(TableName.INSURANCE_POLICIES), createRecord(TableName.INSURANCE_POLICIES));
-    this.apiV1Router.put('/insurance_policy/:id', authManager.assertRoles(Role.LEVEL_1), inputValidator.validateModel(TableName.INSURANCE_POLICIES), updateRecord(TableName.INSURANCE_POLICIES));
-    this.apiV1Router.delete('/insurance_policy/:id', authManager.assertRoles(Role.LEVEL_1), deleteRecord(TableName.INSURANCE_POLICIES));
+    // Subcontracts
+    this.apiV1Router.get('/subcontracts', authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), getAllRecords(TableName.SUBCONTRACTS));
+    this.apiV1Router.get('/subcontracts/:id', authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), getOneRecord(TableName.SUBCONTRACTS));
+    this.apiV1Router.post('/subcontracts', authManager.assertRoles(Role.LEVEL_1), inputValidator.validateModel(TableName.SUBCONTRACTS), createRecord(TableName.SUBCONTRACTS));
+    this.apiV1Router.put('/subcontracts/:id', authManager.assertRoles(Role.LEVEL_1), inputValidator.validateModel(TableName.SUBCONTRACTS), updateRecord(TableName.SUBCONTRACTS));
+    this.apiV1Router.delete('/subcontracts/:id', authManager.assertRoles(Role.LEVEL_1), deleteRecord(TableName.SUBCONTRACTS));
   }
 }
 

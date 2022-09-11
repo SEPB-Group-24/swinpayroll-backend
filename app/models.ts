@@ -24,6 +24,47 @@ export interface Employee {
   subcontract_id: string;
 }
 
+export interface InsuranceCompany {
+  id: string;
+  code: string;
+  name: string;
+}
+
+export interface InsurancePolicy {
+  id: string;
+  code: string;
+  project_id: string;
+  insurance_company_id: string;
+  start_date: string;
+  end_date: string;
+  details: string;
+}
+
+export interface Project {
+  id: string;
+  create_date: string;
+  update_date: string;
+  code: string;
+  name: string;
+  acronym: string;
+  accumulation_amount: number;
+  address: string;
+  end_date: string;
+  project_group: string;
+  start_date: string;
+}
+
+export interface Subcontract {
+  id: string;
+  create_date: string;
+  update_date: string;
+  code: string;
+  name: string;
+  down_payment1: number;
+  down_payment2: number;
+  down_payment3: number;
+}
+
 export interface User {
   id: string;
   create_date: string;
@@ -32,15 +73,4 @@ export interface User {
   email: string;
   password_hash: string;
   role: Role;
-}
-
-export interface InsurancePolicy {
-  id: string; 
-  policy_code: string;
-  project_id: string;
-  insurance_company_id: string;
-  policy_details: string;
-  comment: string;
-  start_date: string;
-  end_date: string;
 }
