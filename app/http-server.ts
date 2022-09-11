@@ -8,11 +8,12 @@ import multer from 'multer';
 import authManager from './auth-manager';
 import { httpPort } from './config';
 import { UPLOADS_DIR } from './constants';
+import crypto from './crypto';
 import { Role, TableName } from './enums';
 import database from './database';
 import inputValidator from './input-validator';
 import Logger from './logger';
-import { User } from './models';
+import { UserCreate, UserStore } from './models';
 import { createRecord, deleteRecord, getAllRecords, getOneRecord, updateRecord } from './resources';
 
 const upload = multer();
@@ -50,7 +51,7 @@ class HttpServer {
   private defineRoutes() {
     // Auth
     this.apiV1Router.post('/auth/log_in', authManager.authenticate(), (req, res) => {
-      const user = req.user as User;
+      const user = req.user as UserStore;
       res.json(authManager.signUserObject(user));
 
       req.logger.info('logged in user', {
@@ -71,7 +72,7 @@ class HttpServer {
       }
 
       try {
-        const user = await database.knex<User>(TableName.USERS)
+        const user = await database.knex<UserStore>(TableName.USERS)
           .where('id', decoded.id)
           .first();
         if (user && authManager.tokenIsValid(decoded)) {
@@ -171,7 +172,8 @@ class HttpServer {
     // Positions
     this.apiV1Router.get('/positions', authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), getAllRecords(TableName.POSITIONS));
     this.apiV1Router.get('/positions/:id', authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), getOneRecord(TableName.POSITIONS));
-    // TODO POST and PUT
+    this.apiV1Router.post('/positions', authManager.assertRoles(Role.LEVEL_1), inputValidator.validateModel(TableName.POSITIONS), createRecord(TableName.POSITIONS));
+    this.apiV1Router.put('/positions/:id', authManager.assertRoles(Role.LEVEL_1), inputValidator.validateModel(TableName.POSITIONS), updateRecord(TableName.POSITIONS));
     this.apiV1Router.delete('/positions/:id', authManager.assertRoles(Role.LEVEL_1), deleteRecord(TableName.POSITIONS));
 
     // Projects
@@ -187,6 +189,20 @@ class HttpServer {
     this.apiV1Router.post('/subcontracts', authManager.assertRoles(Role.LEVEL_1), inputValidator.validateModel(TableName.SUBCONTRACTS), createRecord(TableName.SUBCONTRACTS));
     this.apiV1Router.put('/subcontracts/:id', authManager.assertRoles(Role.LEVEL_1), inputValidator.validateModel(TableName.SUBCONTRACTS), updateRecord(TableName.SUBCONTRACTS));
     this.apiV1Router.delete('/subcontracts/:id', authManager.assertRoles(Role.LEVEL_1), deleteRecord(TableName.SUBCONTRACTS));
+
+    // Users
+    const transformCallback = async (user: UserCreate) => {
+      const { password, password_confirmation, ...rest } = user;
+      return {
+        ...rest,
+        password_hash: crypto.hashPassword(password)
+      };
+    };
+    this.apiV1Router.get('/users', authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), getAllRecords(TableName.USERS));
+    this.apiV1Router.get('/users/:id', authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), getOneRecord(TableName.USERS));
+    this.apiV1Router.post('/users', authManager.assertRoles(Role.LEVEL_1), inputValidator.validateModel(TableName.USERS), createRecord(TableName.USERS, true, transformCallback));
+    this.apiV1Router.put('/users/:id', authManager.assertRoles(Role.LEVEL_1), inputValidator.validateModel(TableName.USERS), updateRecord(TableName.USERS, true, transformCallback));
+    this.apiV1Router.delete('/users/:id', authManager.assertRoles(Role.LEVEL_1), deleteRecord(TableName.USERS));
   }
 }
 

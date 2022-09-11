@@ -8,7 +8,8 @@ import {
   InsuranceCompany,
   InsurancePolicy,
   Project,
-  Subcontract
+  Subcontract,
+  UserCreate
 } from './models';
 import { singularise } from './util';
 import {
@@ -18,6 +19,7 @@ import {
   insurancePolicyValidator,
   projectValidator,
   subcontractValidator,
+  userValidator,
 } from './validators';
 
 interface ValidationError {
@@ -145,6 +147,8 @@ class InputValidator {
         return this.__validateModel<Project>(projectValidator, tableName, data as Project, req);
       case TableName.SUBCONTRACTS:
         return this.__validateModel<Subcontract>(subcontractValidator, tableName, data as Subcontract, req);
+      case TableName.USERS:
+        return this.__validateModel<UserCreate>(userValidator, tableName, data as UserCreate, req);
       default:
         throw new Error('no validator for model');
     }
