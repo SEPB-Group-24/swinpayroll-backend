@@ -5,13 +5,13 @@ import database from './database';
 import { TableName } from './enums';
 import {
   Employee,
-  insurance_policy
+  insurance_policy,subcontractor
 } from './models';
 import { singularise } from './util';
 import {
   BaseValidator,
   employeeValidator,
-  InsurancePolicyValidator
+  InsurancePolicyValidator,subcontractorValidator
 } from './validators';
 
 interface ValidationError {
