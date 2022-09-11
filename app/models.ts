@@ -30,6 +30,16 @@ export interface InsuranceCompany {
   name: string;
 }
 
+export interface InsurancePolicy {
+  id: string;
+  code: string;
+  project_id: string;
+  insurance_company_id: string;
+  start_date: string;
+  end_date: string;
+  details: string;
+}
+
 export interface Project {
   id: string;
   create_date: string;

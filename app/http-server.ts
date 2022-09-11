@@ -161,6 +161,13 @@ class HttpServer {
     this.apiV1Router.put('/insurance_companies/:id', authManager.assertRoles(Role.LEVEL_1), inputValidator.validateModel(TableName.INSURANCE_COMPANIES), updateRecord(TableName.INSURANCE_COMPANIES));
     this.apiV1Router.delete('/insurance_companies/:id', authManager.assertRoles(Role.LEVEL_1), deleteRecord(TableName.INSURANCE_COMPANIES));
 
+    // Insurance Policies
+    this.apiV1Router.get('/insurance_policies', authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), getAllRecords(TableName.INSURANCE_POLICIES));
+    this.apiV1Router.get('/insurance_policies/:id', authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), getOneRecord(TableName.INSURANCE_POLICIES));
+    this.apiV1Router.post('/insurance_policies', authManager.assertRoles(Role.LEVEL_1), inputValidator.validateModel(TableName.INSURANCE_POLICIES), createRecord(TableName.INSURANCE_POLICIES));
+    this.apiV1Router.put('/insurance_policies/:id', authManager.assertRoles(Role.LEVEL_1), inputValidator.validateModel(TableName.INSURANCE_POLICIES), updateRecord(TableName.INSURANCE_POLICIES));
+    this.apiV1Router.delete('/insurance_policies/:id', authManager.assertRoles(Role.LEVEL_1), deleteRecord(TableName.INSURANCE_POLICIES));
+
     // Positions
     this.apiV1Router.get('/positions', authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), getAllRecords(TableName.POSITIONS));
     this.apiV1Router.get('/positions/:id', authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), getOneRecord(TableName.POSITIONS));

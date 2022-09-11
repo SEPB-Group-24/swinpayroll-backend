@@ -6,6 +6,7 @@ import { TableName } from './enums';
 import {
   Employee,
   InsuranceCompany,
+  InsurancePolicy,
   Project,
   Subcontract
 } from './models';
@@ -14,6 +15,7 @@ import {
   BaseValidator,
   employeeValidator,
   insuranceCompanyValidator,
+  insurancePolicyValidator,
   projectValidator,
   subcontractValidator,
 } from './validators';
@@ -137,6 +139,8 @@ class InputValidator {
         return this.__validateModel<Employee>(employeeValidator, tableName, data as Employee, req);
       case TableName.INSURANCE_COMPANIES:
         return this.__validateModel<InsuranceCompany>(insuranceCompanyValidator, tableName, data as InsuranceCompany, req);
+      case TableName.INSURANCE_POLICIES:
+        return this.__validateModel<InsurancePolicy>(insurancePolicyValidator, tableName, data as InsurancePolicy, req);
       case TableName.PROJECTS:
         return this.__validateModel<Project>(projectValidator, tableName, data as Project, req);
       case TableName.SUBCONTRACTS:
