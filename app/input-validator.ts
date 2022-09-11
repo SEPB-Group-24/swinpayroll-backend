@@ -4,12 +4,14 @@ import { isPlainObject, startCase } from 'lodash';
 import database from './database';
 import { TableName } from './enums';
 import {
-  Employee
+  Employee,
+  Project
 } from './models';
 import { singularise } from './util';
 import {
   BaseValidator,
-  employeeValidator
+  employeeValidator,
+  projectValidator
 } from './validators';
 
 interface ValidationError {
@@ -129,6 +131,8 @@ class InputValidator {
     switch (tableName) {
       case TableName.EMPLOYEES:
         return this.__validateModel<Employee>(employeeValidator, tableName, data as Employee, req);
+      case TableName.PROJECTS:
+        return this.__validateModel<Project>(projectValidator, tableName, data as Project, req);
       default:
         throw new Error('no validator for model');
     }

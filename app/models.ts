@@ -24,6 +24,20 @@ export interface Employee {
   subcontract_id: string;
 }
 
+export interface Project {
+  id: string;
+  create_date: string;
+  update_date: string;
+  code: string;
+  name: string;
+  acronym: string;
+  accumulation_amount: number;
+  address: string;
+  end_date: string;
+  project_group: string;
+  start_date: string;
+}
+
 export interface User {
   id: string;
   create_date: string;
