@@ -5,7 +5,7 @@ import database from './database';
 import { TableName } from './enums';
 import {
   Employee,
-  insurance_policy,
+  InsurancePolicy,
 } from './models';
 import { singularise } from './util';
 import {
@@ -132,7 +132,7 @@ class InputValidator {
       case TableName.EMPLOYEES:
         return this.__validateModel<Employee>(employeeValidator, tableName, data as Employee, req);
       case TableName.INSURANCE_POLICIES:
-        return this.__validateModel<insurance_policy>(InsurancePolicyValidator, tableName, data as insurance_policy, req);
+        return this.__validateModel<InsurancePolicy>(InsurancePolicyValidator, tableName, data as InsurancePolicy, req);
       default:
         throw new Error('no validator for model');
     }

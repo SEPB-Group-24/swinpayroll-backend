@@ -1,6 +1,7 @@
 import { TableName } from 'app/enums';
 import { InsurancePolicy } from '../models';
 import Validator, { Type } from './validator';
+
 class InsurancePolicyValidator extends Validator<InsurancePolicy> {
     constructor() {
         super();
@@ -8,7 +9,7 @@ class InsurancePolicyValidator extends Validator<InsurancePolicy> {
             maxLength: Validator.MAX_STRING_LENGTH,
             required: true,
             type: Type.STRING
-        });
+    });
 
         this.addValidation('project_id', {
             custom: async ({ addError, value}, database) => {
