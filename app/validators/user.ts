@@ -23,7 +23,7 @@ class EmployeeValidator extends Validator<UserCreate> {
       doNotTrim: true,
       maxLength: 100,
       minLength: 8,
-      required: true,
+      requiredIf: ({ isNew }) => isNew,
       type: Type.STRING
     });
 
@@ -31,7 +31,7 @@ class EmployeeValidator extends Validator<UserCreate> {
       doNotTrim: true,
       isEqualTo: 'password',
       maxLength: 100,
-      required: true,
+      requiredIf: ({ isNew }) => isNew,
       type: Type.STRING
     });
 

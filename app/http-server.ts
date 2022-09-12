@@ -193,6 +193,10 @@ class HttpServer {
     // Users
     const transformCallback = async (user: UserCreate) => {
       const { password, password_confirmation, ...rest } = user;
+      if (!password) {
+        return user;
+      }
+
       return {
         ...rest,
         password_hash: crypto.hashPassword(password)
