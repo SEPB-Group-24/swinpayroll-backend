@@ -4,7 +4,7 @@ import crypto from '../app/crypto';
 import database from '../app/database';
 import { Role, TableName } from '../app/enums';
 import Logger from '../app/logger';
-import { User } from '../app/models';
+import { UserStore } from '../app/models';
 
 const DEFAULT_EMAIL = 'staff@swinpayroll.xyz';
 const DEFAULT_PASSWORD = 'password';
@@ -20,7 +20,7 @@ const logger = new Logger('seed-script');
 
 (async () => {
   logger.info('seeding default user...');
-  const user = await database.knex<User>(TableName.USERS)
+  const user = await database.knex<UserStore>(TableName.USERS)
     .where('email', DEFAULT_EMAIL)
     .first();
   if (user) {
@@ -30,7 +30,7 @@ const logger = new Logger('seed-script');
   }
 
   try {
-    await database.knex<User>(TableName.USERS)
+    await database.knex<UserStore>(TableName.USERS)
       .insert({
         id: v4(),
         name: 'Default User',
