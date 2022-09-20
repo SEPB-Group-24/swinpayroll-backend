@@ -33,3 +33,17 @@ export interface User {
   password_hash: string;
   role: Role;
 }
+<<<<<<< Updated upstream
+=======
+
+export interface InsurancePolicy {
+  id: string; 
+  code: string;
+  project_id: string;
+  insurance_company_id: string;
+  details: string;
+  comment: string;
+  start_date: string;
+  end_date: string;
+}
+>>>>>>> Stashed changes
