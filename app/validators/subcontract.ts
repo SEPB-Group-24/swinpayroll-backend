@@ -1,5 +1,4 @@
 import { Subcontract } from '../models';
-import { TableName } from '../enums';
 import Validator, { Type } from './validator';
 
 class SubcontractValidator extends Validator<Subcontract> {
