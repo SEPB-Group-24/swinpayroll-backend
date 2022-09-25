@@ -13,7 +13,7 @@ import { Role, TableName } from './enums';
 import database from './database';
 import inputValidator from './input-validator';
 import Logger from './logger';
-import { UserCreate, UserStore } from './models';
+import { Employee, Position, UserCreate, UserStore, WeeklyPayrollHistory } from './models';
 import { createRecord, deleteRecord, getAllRecords, getOneRecord, updateRecord } from './resources';
 
 const upload = multer();
@@ -191,10 +191,10 @@ class HttpServer {
     this.apiV1Router.delete('/subcontracts/:id', authManager.assertRoles(Role.LEVEL_1), deleteRecord(TableName.SUBCONTRACTS));
 
     // Users
-    const transformCallback = async (user: UserCreate) => {
+    const userTransformCallback = async (user: UserCreate) => {
       const { password, password_confirmation, ...rest } = user;
       if (!password) {
-        return user;
+        return { ...user };
       }
 
       return {
@@ -204,9 +204,31 @@ class HttpServer {
     };
     this.apiV1Router.get('/users', authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), getAllRecords(TableName.USERS));
     this.apiV1Router.get('/users/:id', authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), getOneRecord(TableName.USERS));
-    this.apiV1Router.post('/users', authManager.assertRoles(Role.LEVEL_1), inputValidator.validateModel(TableName.USERS), createRecord(TableName.USERS, true, transformCallback));
-    this.apiV1Router.put('/users/:id', authManager.assertRoles(Role.LEVEL_1), inputValidator.validateModel(TableName.USERS), updateRecord(TableName.USERS, true, transformCallback));
+    this.apiV1Router.post('/users', authManager.assertRoles(Role.LEVEL_1), inputValidator.validateModel(TableName.USERS), createRecord(TableName.USERS, true, userTransformCallback));
+    this.apiV1Router.put('/users/:id', authManager.assertRoles(Role.LEVEL_1), inputValidator.validateModel(TableName.USERS), updateRecord(TableName.USERS, true, userTransformCallback));
     this.apiV1Router.delete('/users/:id', authManager.assertRoles(Role.LEVEL_1), deleteRecord(TableName.USERS));
+
+    // Weekly Payroll Histories
+    const weeklyPayrollHistoryTransformCallback = async (weeklyPayrollHistory: WeeklyPayrollHistory) => {
+      const employee = await database.knex<Employee>(TableName.EMPLOYEES)
+        .where('id', weeklyPayrollHistory.employee_id)
+        .first();
+      const position = await database.knex<Position>(TableName.POSITIONS)
+        .where('id', employee?.position_id)
+        .first();
+
+      return {
+        ...weeklyPayrollHistory,
+        employee_position: position?.name ?? 'Unknown',
+        employee_hourly_rate: employee?.hourly_rate ?? 0,
+        employee_overtime_rate: employee?.overtime_rate ?? 0
+      };
+    };
+    this.apiV1Router.get('/weekly_payroll_histories', authManager.assertUser(), getAllRecords(TableName.WEEKLY_PAYROLL_HISTORIES));
+    this.apiV1Router.get('/weekly_payroll_histories/:id', authManager.assertUser(), getOneRecord(TableName.WEEKLY_PAYROLL_HISTORIES));
+    this.apiV1Router.post('/weekly_payroll_histories', authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), inputValidator.validateModel(TableName.WEEKLY_PAYROLL_HISTORIES), createRecord(TableName.WEEKLY_PAYROLL_HISTORIES, true, weeklyPayrollHistoryTransformCallback));
+    this.apiV1Router.put('/weekly_payroll_histories/:id', authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), inputValidator.validateModel(TableName.WEEKLY_PAYROLL_HISTORIES), updateRecord(TableName.WEEKLY_PAYROLL_HISTORIES, true, weeklyPayrollHistoryTransformCallback));
+    this.apiV1Router.delete('/weekly_payroll_histories/:id', authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), deleteRecord(TableName.WEEKLY_PAYROLL_HISTORIES));
   }
 }
 

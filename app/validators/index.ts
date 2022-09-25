@@ -8,3 +8,4 @@ export { default as positionValidator} from './position';
 export { default as projectValidator } from './project';
 export { default as subcontractValidator } from './subcontract';
 export { default as userValidator } from './user';
+export { default as weeklyPayrollHistoryValidator } from './weekly-payroll-history';
