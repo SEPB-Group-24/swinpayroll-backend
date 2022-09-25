@@ -75,6 +75,36 @@ export interface Subcontract {
   down_payment3: number;
 }
 
+export interface WeeklyPayrollHistory {
+  id: string;
+  create_date: string;
+  update_date: string;
+  week_start_date: string;
+  project_id: string;
+  employee_id: string;
+  employee_position: string;
+  employee_hourly_rate: number;
+  employee_overtime_rate: number;
+  hours_day_1: number;
+  hours_day_2: number;
+  hours_day_3: number;
+  hours_day_4: number;
+  hours_day_5: number;
+  hours_day_6: number;
+  hours_day_7: number;
+  slip_regular_hours: number;
+  slip_overtime_hours: number;
+  slip_addition_1: number;
+  slip_addition_2: number;
+  slip_addition_3: number;
+  slip_deduction_1: number;
+  slip_deduction_2: number;
+  slip_deduction_3: number;
+  slip_deduction_4: number;
+  slip_deduction_5: number;
+  slip_deduction_6: number;
+}
+
 interface BaseUser {
   id: string;
   create_date: string;
