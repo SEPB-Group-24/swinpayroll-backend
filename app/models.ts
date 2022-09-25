@@ -70,9 +70,6 @@ export interface Subcontract {
   update_date: string;
   code: string;
   name: string;
-  start_date: string;
-  project_id: string;
-  value: string;
   down_payment1: number;
   down_payment2: number;
   down_payment3: number;
