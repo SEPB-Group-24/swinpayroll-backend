@@ -69,6 +69,11 @@ class WeeklyPayrollHistoryValidator extends Validator<WeeklyPayrollHistory> {
     ];
     numberFields.forEach((field) => {
       this.addValidation(field, {
+        custom: ({ addError, value }) => {
+          if (value < 0) {
+            addError('must be at least 0');
+          }
+        },
         required: true,
         type: Type.NUMBER
       });
