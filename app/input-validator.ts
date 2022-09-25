@@ -7,9 +7,11 @@ import {
   Employee,
   InsuranceCompany,
   InsurancePolicy,
+  Position,
   Project,
   Subcontract,
-  UserCreate
+  UserCreate,
+  WeeklyPayrollHistory
 } from './models';
 import { singularise } from './util';
 import {
@@ -17,9 +19,11 @@ import {
   employeeValidator,
   insuranceCompanyValidator,
   insurancePolicyValidator,
+  positionValidator,
   projectValidator,
   subcontractValidator,
   userValidator,
+  weeklyPayrollHistoryValidator
 } from './validators';
 
 interface ValidationError {
@@ -143,12 +147,16 @@ class InputValidator {
         return this.__validateModel<InsuranceCompany>(insuranceCompanyValidator, tableName, data as InsuranceCompany, req);
       case TableName.INSURANCE_POLICIES:
         return this.__validateModel<InsurancePolicy>(insurancePolicyValidator, tableName, data as InsurancePolicy, req);
+      case TableName.POSITIONS:
+        return this.__validateModel<Position>(positionValidator, tableName, data as Position, req);
       case TableName.PROJECTS:
         return this.__validateModel<Project>(projectValidator, tableName, data as Project, req);
       case TableName.SUBCONTRACTS:
         return this.__validateModel<Subcontract>(subcontractValidator, tableName, data as Subcontract, req);
       case TableName.USERS:
         return this.__validateModel<UserCreate>(userValidator, tableName, data as UserCreate, req);
+      case TableName.WEEKLY_PAYROLL_HISTORIES:
+        return this.__validateModel<WeeklyPayrollHistory>(weeklyPayrollHistoryValidator, tableName, data as WeeklyPayrollHistory, req);
       default:
         throw new Error('no validator for model');
     }
