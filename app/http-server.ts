@@ -131,9 +131,18 @@ class HttpServer {
     };
     this.apiV1Router.post('/employees', authManager.assertRoles(Role.LEVEL_1), employeeUploadFields, inputValidator.validateModel(TableName.EMPLOYEES), (req, res, next) => {
       const files = req.files as Record<string, Express.Multer.File[]>;
+      if (!files) {
+        next();
+        return;
+      }
+
       for (const [name, mimeStart] of employeeFileStructure) {
         const file = files[name]?.[0];
-        if (!file?.mimetype.startsWith(mimeStart)) {
+        if (!file) {
+          continue;
+        }
+
+        if (!file.mimetype.startsWith(mimeStart)) {
           res.sendStatus(400);
           return;
         }
