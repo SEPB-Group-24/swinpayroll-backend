@@ -18,17 +18,32 @@ class SubcontractValidator extends Validator<Subcontract> {
     });
 
     this.addValidation('down_payment1', {
-      required: true,
+      custom: ({ addError, value }) => {
+        if (value < 0) {
+          addError('must be higher than 0');
+        }
+      },
+      required: false,
       type: Type.NUMBER
     });
 
     this.addValidation('down_payment2', {
-      required: true,
+      custom: ({ addError, value }) => {
+        if (value < 0) {
+          addError('must be higher than 0');
+        }
+      },
+      required: false,
       type: Type.NUMBER
     });
 
     this.addValidation('down_payment3', {
-      required: true,
+      custom: ({ addError, value }) => {
+        if (value < 0) {
+          addError('must be higher than 0');
+        }
+      },
+      required: false,
       type: Type.NUMBER
     });
   }
