@@ -211,7 +211,7 @@ class HttpServer {
 
       return {
         ...rest,
-        password_hash: crypto.hashPassword(password)
+        password_hash: await crypto.hashPassword(password)
       };
     };
     this.apiV1Router.get('/users', authManager.assertRoles(Role.LEVEL_1), getAllRecords(TableName.USERS));
