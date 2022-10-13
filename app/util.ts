@@ -9,3 +9,7 @@ export const singularise = (word: string) => {
 
   return word;
 };
+
+export const titleCase = (string: string) => {
+  return string.split('_').map((substring) => `${substring[0].toUpperCase()}${substring.slice(1)}`).join(' ');
+};

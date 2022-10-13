@@ -4,17 +4,20 @@ import { AddressInfo } from 'net';
 import cors from 'cors';
 import express, { Request, Response } from 'express';
 import multer from 'multer';
+import { render } from 'mustache';
 
 import authManager from './auth-manager';
+import browser from './browser';
 import { httpPort } from './config';
-import { UPLOADS_DIR } from './constants';
+import { TEMPLATES_DIR, UPLOADS_DIR } from './constants';
 import crypto from './crypto';
 import { Role, TableName } from './enums';
 import database from './database';
 import inputValidator from './input-validator';
 import Logger from './logger';
-import { Employee, Position, UserCreate, UserStore, WeeklyPayrollHistory } from './models';
+import { Employee, Position, Project, UserCreate, UserStore, WeeklyPayrollHistory } from './models';
 import { createRecord, deleteRecord, getAllRecords, getOneRecord, updateRecord } from './resources';
+import { titleCase } from './util';
 
 const upload = multer();
 
@@ -228,15 +231,111 @@ class HttpServer {
 
       return {
         ...weeklyPayrollHistory,
+        project_id: employee?.project_id ?? '',
         employee_position: position?.name ?? 'Unknown',
         employee_hourly_rate: employee?.hourly_rate ?? 0,
         employee_overtime_rate: employee?.overtime_rate ?? 0
       };
     };
     this.apiV1Router.get('/weekly_payroll_histories', authManager.assertUser(), getAllRecords(TableName.WEEKLY_PAYROLL_HISTORIES));
+    this.apiV1Router.get('/weekly_payroll_histories/csv', authManager.assertUser(), async (req, res) => {
+      const weeklyPayrollHistories = await database.knex<WeeklyPayrollHistory>(TableName.WEEKLY_PAYROLL_HISTORIES);
+      const projects = await database.knex<Project>(TableName.PROJECTS);
+      const employees = await database.knex<Employee>(TableName.EMPLOYEES);
+      const positions = await database.knex<Position>(TableName.POSITIONS);
+      const numAttrs = [
+        'employee_hourly_rate',
+        'employee_overtime_rate',
+        'hours_day_1',
+        'hours_day_2',
+        'hours_day_3',
+        'hours_day_4',
+        'hours_day_5',
+        'hours_day_6',
+        'hours_day_7',
+        'slip_regular_hours',
+        'slip_overtime_hours',
+        'slip_addition_1',
+        'slip_addition_2',
+        'slip_addition_3',
+        'slip_deduction_1',
+        'slip_deduction_2',
+        'slip_deduction_3',
+        'slip_deduction_4',
+        'slip_deduction_5',
+        'slip_deduction_6'
+      ] as const;
+      const csvHeader = [
+        'Start of Week',
+        'Project',
+        'Employee',
+        'Employee Position',
+        ...numAttrs.map((attr) => titleCase(attr))
+      ].join(',');
+      const csvBody = weeklyPayrollHistories.map((weeklyPayrollHistory) => {
+        const project = projects.find(({ id }) => id === weeklyPayrollHistory.project_id);
+        const employee = employees.find(({ id }) => id === weeklyPayrollHistory.employee_id);
+        const position = employee ? positions.find(({ id }) => id === employee.position_id) : null;
+        return [
+          weeklyPayrollHistory.week_start_date,
+          project?.name ?? 'Unknown',
+          employee?.name ?? 'Unknown',
+          position?.name ?? 'Unknown',
+          ...numAttrs.map((attr) => weeklyPayrollHistory[attr])
+        ].join(',');
+      }).join('\n');
+      res.setHeader('Content-Type', 'text/csv');
+      res.send(`${csvHeader}\n${csvBody}`);
+    });
     this.apiV1Router.get('/weekly_payroll_histories/:id', authManager.assertUser(), getOneRecord(TableName.WEEKLY_PAYROLL_HISTORIES));
+    this.apiV1Router.get('/weekly_payroll_histories/:id/pdf', authManager.assertUser(), async (req, res) => {
+      try {
+        const { id } = req.params;
+        const weeklyPayrollHistory = await database.knex<WeeklyPayrollHistory>(TableName.WEEKLY_PAYROLL_HISTORIES)
+          .where('id', id)
+          .first();
+        if (!weeklyPayrollHistory) {
+          res.sendStatus(404);
+          return;
+        }
+
+        const project = await database.knex<Project>(TableName.PROJECTS)
+          .where('id', weeklyPayrollHistory.project_id)
+          .first();
+        const employee = await database.knex<Employee>(TableName.EMPLOYEES)
+          .where('id', weeklyPayrollHistory.employee_id)
+          .first();
+        const position = employee?.position_id ? await database.knex<Position>(TableName.POSITIONS)
+          .where('id', employee.position_id)
+          .first() : null;
+
+        const numEntries = Object.entries(weeklyPayrollHistory).filter(([key, value]) => typeof value === 'number').map(([key, value]) => {
+          return [titleCase(key), value];
+        });
+        const html = render(fs.readFileSync(`${TEMPLATES_DIR}/weekly_payroll_history.html`, 'utf8'), {
+          entries: Object.entries({
+            'Start of Week': weeklyPayrollHistory.week_start_date,
+            Project: project?.name ?? 'Unknown',
+            Employee: employee?.name ?? 'Unknown',
+            'Employee Position': position?.name ?? 'Unknown',
+            ...Object.fromEntries(numEntries)
+          }).map(([key, value]) => ({
+            key,
+            value
+          })),
+          id
+        });
+        const buffer = await browser.htmlToPdf(html);
+        res.setHeader('Content-Type', 'application/pdf');
+        res.send(buffer);
+      } catch (error) {
+        this.logger.error('error while serving weekly payroll history pdf', {
+          error
+        });
+      }
+    });
     this.apiV1Router.post('/weekly_payroll_histories', authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), inputValidator.validateModel(TableName.WEEKLY_PAYROLL_HISTORIES), createRecord(TableName.WEEKLY_PAYROLL_HISTORIES, true, weeklyPayrollHistoryTransformCallback));
-    this.apiV1Router.put('/weekly_payroll_histories/:id', authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), inputValidator.validateModel(TableName.WEEKLY_PAYROLL_HISTORIES), updateRecord(TableName.WEEKLY_PAYROLL_HISTORIES, true, weeklyPayrollHistoryTransformCallback));
+    this.apiV1Router.put('/weekly_payroll_histories/:id', authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), inputValidator.validateModel(TableName.WEEKLY_PAYROLL_HISTORIES), updateRecord(TableName.WEEKLY_PAYROLL_HISTORIES));
     this.apiV1Router.delete('/weekly_payroll_histories/:id', authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), deleteRecord(TableName.WEEKLY_PAYROLL_HISTORIES));
   }
 }

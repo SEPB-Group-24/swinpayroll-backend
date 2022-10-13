@@ -19,20 +19,6 @@ class WeeklyPayrollHistoryValidator extends Validator<WeeklyPayrollHistory> {
       type: Type.STRING
     });
 
-    this.addValidation('project_id', {
-      custom: async ({ addError, value }, database) => {
-        const record = await database.knex(TableName.PROJECTS)
-          .where('id', value)
-          .first();
-
-        if (!record) {
-          addError('is invalid');
-        }
-      },
-      required: true,
-      type: Type.STRING
-    });
-
     this.addValidation('employee_id', {
       custom: async ({ addError, value }, database) => {
         const record = await database.knex(TableName.EMPLOYEES)
