@@ -16,7 +16,8 @@ class EmployeeValidator extends Validator<UserCreate> {
       maxLength: Validator.MAX_STRING_LENGTH,
       regex: Validator.EMAIL_REGEX,
       required: true,
-      type: Type.STRING
+      type: Type.STRING,
+      unique: true
     });
 
     this.addValidation('password', {

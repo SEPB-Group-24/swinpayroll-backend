@@ -206,7 +206,7 @@ class HttpServer {
     const userTransformCallback = async (user: UserCreate) => {
       const { password, password_confirmation, ...rest } = user;
       if (!password) {
-        return { ...user };
+        return { ...rest };
       }
 
       return {
@@ -214,8 +214,8 @@ class HttpServer {
         password_hash: await crypto.hashPassword(password)
       };
     };
-    this.apiV1Router.get('/users', authManager.assertRoles(Role.LEVEL_1), getAllRecords(TableName.USERS));
-    this.apiV1Router.get('/users/:id', authManager.assertRoles(Role.LEVEL_1), getOneRecord(TableName.USERS));
+    this.apiV1Router.get('/users', authManager.assertRoles(Role.LEVEL_1), getAllRecords(TableName.USERS, ['password_hash']));
+    this.apiV1Router.get('/users/:id', authManager.assertRoles(Role.LEVEL_1), getOneRecord(TableName.USERS, ['password_hash']));
     this.apiV1Router.post('/users', authManager.assertRoles(Role.LEVEL_1), inputValidator.validateModel(TableName.USERS), createRecord(TableName.USERS, true, userTransformCallback));
     this.apiV1Router.put('/users/:id', authManager.assertRoles(Role.LEVEL_1), inputValidator.validateModel(TableName.USERS), updateRecord(TableName.USERS, true, userTransformCallback));
     this.apiV1Router.delete('/users/:id', authManager.assertRoles(Role.LEVEL_1), deleteRecord(TableName.USERS));

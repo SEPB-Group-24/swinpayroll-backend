@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import { omit } from 'lodash';
 import { v4 } from 'uuid';
 
 import database from './database';
@@ -61,7 +62,7 @@ export const deleteRecord = (tableName: TableName, doRespond = true) => {
   };
 }
 
-export const getOneRecord = <T>(tableName: TableName) => {
+export const getOneRecord = <T>(tableName: TableName, excludeFields?: (keyof T)[]) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       const record = await database.knex<T>(tableName)
@@ -73,7 +74,7 @@ export const getOneRecord = <T>(tableName: TableName) => {
       }
 
       res.json({
-        [singularise(tableName)]: record
+        [singularise(tableName)]: excludeFields ? omit(record as Record<string, unknown>, ['password_hash']) : record
       });
       next();
     } catch (error) {
@@ -86,12 +87,12 @@ export const getOneRecord = <T>(tableName: TableName) => {
   };
 };
 
-export const getAllRecords = <T>(tableName: TableName) => {
+export const getAllRecords = <T>(tableName: TableName, excludeFields?: (keyof T)[]) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       const records = await database.knex<T>(tableName);
       res.json({
-        [tableName]: records
+        [tableName]: records.map((record) => excludeFields ? omit(record as Record<string, unknown>, ...excludeFields) : record)
       });
       next();
     } catch (error) {
