@@ -193,9 +193,7 @@ CREATE TABLE `subcontracts` (
   `down_payment1` float NOT NULL,
   `down_payment2` float NOT NULL,
   `down_payment3` float NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `project_id` (`project_id`),
-  CONSTRAINT `subcontracts_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
