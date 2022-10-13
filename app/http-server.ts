@@ -95,8 +95,8 @@ class HttpServer {
     });
 
     // Employees
-    this.apiV1Router.get('/employees', authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), getAllRecords(TableName.EMPLOYEES));
-    this.apiV1Router.get('/employees/:id', authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), getOneRecord(TableName.EMPLOYEES));
+    this.apiV1Router.get('/employees', authManager.assertUser(), getAllRecords(TableName.EMPLOYEES));
+    this.apiV1Router.get('/employees/:id', authManager.assertUser(), getOneRecord(TableName.EMPLOYEES));
     this.apiV1Router.get('/employees/:id/photo',  authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), (req, res) => {
       res.sendFile(`${UPLOADS_DIR}/employee_photos/${req.params.id}`, (error) => {
         if (error) {
@@ -182,15 +182,15 @@ class HttpServer {
     this.apiV1Router.delete('/insurance_policies/:id', authManager.assertRoles(Role.LEVEL_1), deleteRecord(TableName.INSURANCE_POLICIES));
 
     // Positions
-    this.apiV1Router.get('/positions', authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), getAllRecords(TableName.POSITIONS));
-    this.apiV1Router.get('/positions/:id', authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), getOneRecord(TableName.POSITIONS));
+    this.apiV1Router.get('/positions', authManager.assertUser(), getAllRecords(TableName.POSITIONS));
+    this.apiV1Router.get('/positions/:id', authManager.assertUser(), getOneRecord(TableName.POSITIONS));
     this.apiV1Router.post('/positions', authManager.assertRoles(Role.LEVEL_1), inputValidator.validateModel(TableName.POSITIONS), createRecord(TableName.POSITIONS));
     this.apiV1Router.put('/positions/:id', authManager.assertRoles(Role.LEVEL_1), inputValidator.validateModel(TableName.POSITIONS), updateRecord(TableName.POSITIONS));
     this.apiV1Router.delete('/positions/:id', authManager.assertRoles(Role.LEVEL_1), deleteRecord(TableName.POSITIONS));
 
     // Projects
-    this.apiV1Router.get('/projects', authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), getAllRecords(TableName.PROJECTS));
-    this.apiV1Router.get('/projects/:id', authManager.assertRoles(Role.LEVEL_1, Role.LEVEL_2), getOneRecord(TableName.PROJECTS));
+    this.apiV1Router.get('/projects', authManager.assertUser(), getAllRecords(TableName.PROJECTS));
+    this.apiV1Router.get('/projects/:id', authManager.assertUser(), getOneRecord(TableName.PROJECTS));
     this.apiV1Router.post('/projects', authManager.assertRoles(Role.LEVEL_1), inputValidator.validateModel(TableName.PROJECTS), createRecord(TableName.PROJECTS));
     this.apiV1Router.put('/projects/:id', authManager.assertRoles(Role.LEVEL_1), inputValidator.validateModel(TableName.PROJECTS), updateRecord(TableName.PROJECTS));
     this.apiV1Router.delete('/projects/:id', authManager.assertRoles(Role.LEVEL_1), deleteRecord(TableName.PROJECTS));
