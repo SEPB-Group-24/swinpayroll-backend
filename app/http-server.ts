@@ -231,6 +231,7 @@ class HttpServer {
 
       return {
         ...weeklyPayrollHistory,
+        project_id: employee?.project_id ?? '',
         employee_position: position?.name ?? 'Unknown',
         employee_hourly_rate: employee?.hourly_rate ?? 0,
         employee_overtime_rate: employee?.overtime_rate ?? 0
