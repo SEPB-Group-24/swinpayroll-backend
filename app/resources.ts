@@ -52,12 +52,13 @@ export const deleteRecord = (tableName: TableName, doRespond = true) => {
       } else {
         next();
       }
-    } catch (error) {
+    } catch (error: { code: string }) {
       req.logger.error('error while deleting record', {
         tableName,
         error
       });
-      res.sendStatus(500);
+      const statusCode = error.code === 'ER_ROW_IS_REFERENCED_2' ? 409 : 500;
+      res.sendStatus(statusCode);
     }
   };
 }
