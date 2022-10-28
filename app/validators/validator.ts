@@ -77,6 +77,7 @@ export default class Validator<TModel> {
   static EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   static MAX_STRING_LENGTH = 255;
   static MAX_TEXT_LENGTH = 10000;
+  static PHONE_REGEX = /^\+?[0-9\s]+$/;
 
   validations = new Map<keyof TModel, Validation<TModel, unknown>>();
 

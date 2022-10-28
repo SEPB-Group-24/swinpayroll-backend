@@ -1,5 +1,3 @@
-import { phone } from 'phone';
-
 import { MaritalStatus, Sex, TableName } from '../enums';
 import { Employee, Position } from '../models';
 import Validator, { Type } from './validator';
@@ -27,12 +25,7 @@ class EmployeeValidator extends Validator<Employee> {
     });
 
     this.addValidation('phone', {
-      custom: ({ addError, value }) => {
-        if (!phone(value).isValid) {
-          addError('is not a valid mobile international phone number');
-          return;
-        }
-      },
+      regex: Validator.PHONE_REGEX,
       required: true,
       type: Type.STRING
     });
@@ -85,12 +78,7 @@ class EmployeeValidator extends Validator<Employee> {
     });
 
     this.addValidation('emergency_phone', {
-      custom: ({ addError, value }) => {
-        if (!phone(value).isValid) {
-          addError('is not a valid mobile international phone number');
-          return;
-        }
-      },
+      regex: Validator.PHONE_REGEX,
       required: true,
       type: Type.STRING
     });

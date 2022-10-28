@@ -1897,11 +1897,6 @@ pg-connection-string@2.5.0:
   resolved "https://registry.yarnpkg.com/pg-connection-string/-/pg-connection-string-2.5.0.tgz#538cadd0f7e603fc09a12590f3b8a452c2c0cf34"
   integrity sha512-r5o/V/ORTA6TmUnyWZR9nCj1klXCO2CEKNRlVuJptZe85QuhFayC7WeMic7ndayT5IRIR0S0xFxFi2ousartlQ==
 
-phone@^3.1.25:
-  version "3.1.25"
-  resolved "https://registry.yarnpkg.com/phone/-/phone-3.1.25.tgz#de5f8238110375831f953535c65c28e98347cfea"
-  integrity sha512-VA3vWF1WV/0DrpXRnANpZVQpT6wWO8GUdmz6RzyMNfSEV9qWZ2pX6fLYUXAIaYhMs/Bievqv5aXQTkK+e2Wp+Q==
-
 picomatch@^2.0.4, picomatch@^2.2.1, picomatch@^2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.3.1.tgz#3ba3833733646d9d3e4995946c1365a67fb07a42"
